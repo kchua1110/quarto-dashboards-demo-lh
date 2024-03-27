@@ -4,7 +4,7 @@ format: dashboard
 ---
 
 ```{r, setup}
-#| include: false
+#| include: false #option to not include this code chunk since it's part of the setup
 
 library(ggplot2)
 library(palmerpenguins)

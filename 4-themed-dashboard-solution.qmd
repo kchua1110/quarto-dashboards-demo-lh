@@ -18,7 +18,7 @@ library(plotly)
 
 ```
 
-## Row 1 {height=20%}
+## Row 1 {height=30%}
 
 
 ### Chart A

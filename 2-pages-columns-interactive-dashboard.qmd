@@ -106,7 +106,7 @@ ggplot(data = biscoe_sp, aes(x = species, y = count)) +
 list(
   icon = "hash",
   color = "warning",
-  value = nrow(penguins)
+  value = nrow(penguins) # count the rows in dataset "penguin"
 )
 ```
 
