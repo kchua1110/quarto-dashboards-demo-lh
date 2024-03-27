@@ -1,0 +1,25 @@
+---
+title: "A simple Quarto Dashboard"
+format: dashboard
+---
+
+# Page 1
+
+## Row 1
+
+```{r}
+print("Column 1 in Row 1")
+```
+
+
+```{r}
+print("Column 2 in Row 1")
+```
+
+## Row 2
+
+```{r}
+print("Column 1 in Row 2")
+```
+
+# Page 2

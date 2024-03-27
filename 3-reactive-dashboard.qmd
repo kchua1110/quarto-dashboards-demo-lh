@@ -1,0 +1,164 @@
+---
+title: "Reactive Dashboard with Shiny Elements"
+format: dashboard
+server: shiny
+---
+
+```{r setup}
+#| include: false
+
+library(ggplot2)
+library(shiny)
+library(palmerpenguins)
+library(dplyr)
+
+```
+
+NOT WORKING
+
+# {.sidebar}
+<!--![](images/penguins.png){width="80%"}-->
+
+```{r}
+
+checkboxGroupInput("species", "Species:", 
+                   choices = unique(penguins$species), 
+                   selected = unique(penguins$species))
+
+checkboxGroupInput("islands", "Islands:", 
+                   choices = unique(penguins$island), 
+                   selected = unique(penguins$island))
+
+
+# Define server logic
+server <- function(input, output, session) {
+  # Reactive expression to filter penguins based on selected species and islands
+  filtered_penguins <- reactive({
+    data <- penguins %>%
+      filter(species %in% input$species,
+             island %in% input$islands)
+    return(data)
+  })
+  
+  # You can use filtered_penguins() to access the filtered dataset
+}
+
+# Run the application
+shinyApp(ui = ui, server = server)
+
+```
+
+
+```{r}
+# Define UI
+ui <- fluidPage(
+  titlePanel("Distribution Plot"),
+  sidebarLayout(
+    sidebarPanel(
+      selectInput("dist", "Distribution:", choices = c("kde", "hist")),
+      checkboxInput("rug", "Show rug marks", value = FALSE)
+    ),
+    mainPanel(
+      # Main panel content, if any
+    )
+  )
+)
+
+# Define server logic
+server <- function(input, output, session) {
+  # Server logic, if any
+}
+
+# Run the application
+shinyApp(ui = ui, server = server)
+```
+
+# Plots
+```{r}
+render_plot <- function() {
+  # Plot creation using ggplot2
+  plot <- ggplot(filtered_penguins(), aes(x = bill_depth_mm, fill = species)) +
+    geom_histogram(binwidth = 1, position = "identity") +
+    labs(title = "Depth Plot", x = "Bill Depth (mm)", y = "Count") +
+    facet_wrap(~species)  # facet by species
+  
+  # Add rug marks if input$rug is TRUE
+  if (input$rug) {
+    plot <- plot + geom_rug()
+  }
+  
+  # Return the plot
+  return(plot)
+}
+
+# Define UI
+ui <- fluidPage(
+  titlePanel("Depth Plot"),
+  sidebarLayout(
+    sidebarPanel(
+      selectInput("dist", "Distribution:", choices = c("kde", "hist")),
+      checkboxInput("rug", "Show rug marks", value = FALSE)
+    ),
+    mainPanel(
+      plotOutput("depthPlot")
+    )
+  )
+)
+
+# Define server logic
+server <- function(input, output, session) {
+  # Render plot
+  output$depthPlot <- renderPlot({
+    render_plot()
+  })
+}
+
+# Run the application
+shinyApp(ui = ui, server = server)
+```
+
+
+```{r}
+render_plot <- function() {
+  # Plot creation using ggplot2
+  plot <- ggplot(filtered_penguins(), aes(x = bill_length_mm, fill = species)) +
+    geom_histogram(binwidth = 1, position = "identity") +
+    labs(title = "Length Plot", x = "Bill Length (mm)", y = "Count") +
+    facet_wrap(~species)  # facet by species
+  
+  # Add rug marks if input$rug is TRUE
+  if (input$rug) {
+    plot <- plot + geom_rug()
+  }
+  
+  # Return the plot
+  return(plot)
+}
+
+# Define UI
+ui <- fluidPage(
+  titlePanel("Length Plot"),
+  sidebarLayout(
+    sidebarPanel(
+      selectInput("dist", "Distribution:", choices = c("kde", "hist")),
+      checkboxInput("rug", "Show rug marks", value = FALSE)
+    ),
+    mainPanel(
+      plotOutput("lengthPlot")
+    )
+  )
+)
+
+# Define server logic
+server <- function(input, output, session) {
+  # Render plot
+  output$lengthPlot <- renderPlot({
+    render_plot()
+  })
+}
+
+# Run the application
+shinyApp(ui = ui, server = server)
+```
+
+

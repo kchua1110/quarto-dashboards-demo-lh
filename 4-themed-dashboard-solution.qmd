@@ -1,0 +1,110 @@
+---
+title: "Themed Dashboard"
+format: 
+    dashboard:
+        theme: sketchy
+        vertical_layout: fill
+---
+
+```{r setup}
+#| include: false
+
+library(palmerpenguins)
+library(dplyr)
+library(ggplot2)
+library(DT)
+library(plotly)
+
+
+```
+
+## Row 1 {height=20%}
+
+
+### Chart A
+
+```{r}
+#| content: valuebox
+#| title: "Max Body Mass (g)"
+
+list(
+  icon = "hash",
+  color = "warning",
+  value = max(penguins$body_mass_g, na.rm = T)
+)
+```
+
+### Chart B
+
+```{r}
+#| content: valuebox
+#| title: "Max Flipper Length (mm)"
+
+list(
+  icon = "hash",
+  color = "secondary",
+  value = max(penguins$flipper_length_mm, na.rm = T)
+)
+```
+
+
+
+## Row 2 {height=80%}
+
+
+### Column 1 {.tabset}
+
+```{r}
+#| title: Bill Depth Distribution of Chinstrap
+
+chinstrap <- penguins %>%
+    filter(species == "Chinstrap")
+
+ggplot(chinstrap, aes(x = bill_depth_mm)) +
+    geom_histogram(fill = "orange") +
+    labs(title = NULL,
+         x = "Bill Depth (mm)",
+         y = NULL) +
+    theme_minimal()
+
+
+```
+
+
+
+```{r}
+#| title: Chinstrap Table
+
+datatable(chinstrap)
+
+```
+
+
+### Column 2
+
+```{r}
+#| title: Interactive Scatterplot
+
+scatterplot <- ggplot(data = penguins, 
+                      aes(x = flipper_length_mm, 
+                          y = body_mass_g)) +
+    geom_point(aes(color = species)) +
+    scale_color_manual(values = c(
+        "Adelie" = "purple2",
+        "Chinstrap" = "orange",
+        "Gentoo" = "cyan4"
+    )) +
+    labs(
+        title = NULL,
+        x = "Flipper Length (mm)",
+        y = "Body Mass (g)",
+        color = "Species"
+    ) +
+    theme_minimal()
+
+ggplotly(scatterplot)
+
+```
+
+
+

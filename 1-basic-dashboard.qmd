@@ -1,0 +1,89 @@
+---
+title: "Basic Dashboard with Palmer Penguins Data"
+format: dashboard
+---
+
+```{r, setup}
+#| include: false
+
+library(ggplot2)
+library(palmerpenguins)
+library(dplyr)
+
+```
+
+```{r}
+# save data to object
+penguin_df <- palmerpenguins::penguins
+```
+
+
+
+This is a simple dashboard created with Quarto using penguins. 
+Data were collected and made available by Dr. Kristen Gorman and the Palmer Station, Antarctica LTER, a member of the Long Term Ecological Research Network.
+
+
+## Row 1
+
+```{r}
+#| title: Penguin Scatter Plot
+
+ggplot(data = penguin_df, aes(x = flipper_length_mm, y = body_mass_g)) + geom_point(aes(color = species)) +
+    scale_color_manual(values = c(
+        "Adelie" = "purple2",
+        "Chinstrap" = "orange",
+        "Gentoo" = "cyan4"
+    )) +
+    labs(
+        title = NULL,
+        x = "Flipper Length (mm)",
+        y = "Body Mass (g)",
+        color = "Species"
+    ) +
+    theme_minimal()
+```
+
+## Row 2
+
+
+
+```{r}
+#| title: Bill Depth Distribution of Chinstrap
+
+penguin_df %>%
+    filter(species == "Chinstrap") %>%
+    ggplot(aes(x = bill_depth_mm)) +
+    geom_histogram(fill = "orange") +
+    labs(title = NULL,
+         x = "Bill Depth (mm)",
+         y = NULL) +
+    theme_minimal()
+```
+
+
+
+```{r}
+#| title: Penguin Species on Biscoe Island
+
+# subsetted penguins data frame
+biscoe_sp <- penguin_df %>% 
+    filter(island == "Biscoe") %>% 
+    group_by(species) %>% 
+    summarize(count = n())
+    
+# bar plot 
+ggplot(data = biscoe_sp, aes(x = species, y = count)) +
+    geom_col(aes(fill = species)) +
+    scale_fill_manual(values = c(
+        "Adelie" = "purple2",
+        "Gentoo" = "cyan4"
+    )) +
+    labs(title = NULL,
+         x = NULL,
+         y = "Number of species",
+         fill = "Species") +
+    theme_minimal() 
+```
+
+
+

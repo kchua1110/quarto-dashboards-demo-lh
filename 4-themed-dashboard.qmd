@@ -1,0 +1,66 @@
+---
+title: "Themed Dashboard"
+format: 
+    dashboard:
+        theme: sketchy
+        vertical_layout: fill
+---
+
+```{r setup}
+#| include: false
+
+
+
+```
+
+## Row 1 {height=20%}
+
+
+### Chart A
+
+```{r}
+
+
+```
+
+### Chart B
+
+```{r}
+
+#| 
+```
+
+
+
+## Row 2 {height=80%}
+
+
+### Column 1 {.tabset}
+
+```{r}
+#| title: Chart C
+
+
+
+```
+
+
+
+```{r}
+#| title: Chart D
+
+
+
+```
+
+
+### Column 2
+
+```{r}
+#| title: Chart E
+
+
+```
+
+
+
